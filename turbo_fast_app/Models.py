@@ -36,16 +36,16 @@ class TurboFan(BaseModel):
     
 # Class for making model predictions
 class TurbofanModel:
-    # Class constructor, loads the model if exits
-
-
+    # Class constructor, loads the model if exits  
     def __init__(self):
-        self.model_fname_ = "timeseries_regression_pipeline.gz"
+        self.model_fname_ = "turbo_fast_app/timeseries_regression_pipeline.gz"
+        #self.model_fname_ = "timeseries_regression_pipeline.gz"
         try:
             self.model = joblib.load(self.model_fname_)
         except Exception as _:
             #self.model = self._train_model()
             #joblib.dump(self.model, self.model_fname_)
+            print("had an exception loading joblib!")
             pass
 
     # Make predictions based on the user-entered data
@@ -111,6 +111,7 @@ class TurbofanModel:
                     sensor9_lag_1
         ]]
         prediction = self.model.predict(data_in)
+        #prediction = [12, 14] #self.model.predict(data_in)
         #probs = self.model.predict_proba(data_in).max()
 
         return prediction[0] #, probs

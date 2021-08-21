@@ -1,15 +1,15 @@
 import uvicorn
 from fastapi import FastAPI
-from Model import TurbofanModel, TurboFan
-
+#from turbo_fast_app.Model import TurbofanModel, TurboFan
+from turbo_fast_app import Models
 # Create app and model objects
 app = FastAPI()
-model = TurbofanModel()
+model = Models.TurbofanModel()
 
 # Expose the prediction functionality, make a prediction from the passed JSON data
 # and return the predicted flower species with the confidence
 @app.post("/predict")
-def predict_rul(turbofan: TurboFan):
+def predict_rul(turbofan: Models.TurboFan):
     data = turbofan.dict()
     prediction = model.predict_rul(
         data["sensor2"],
@@ -59,4 +59,5 @@ def index():
 # Will run on http://127.0.0.1:8000
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run("application:app", host="0.0.0.0", port=8000)
+    #uvicorn.run(app, host="127.0.0.1", port=8000)
