@@ -3,7 +3,7 @@ from fastapi import FastAPI
 #from turbo_fast_app.Model import TurbofanModel, TurboFan
 from turbo_fast_app import Models
 # Create app and model objects
-app = FastAPI()
+application = app = FastAPI()
 model = Models.TurbofanModel()
 
 # Expose the prediction functionality, make a prediction from the passed JSON data
