@@ -49,15 +49,8 @@ def predict_rul(turbofan: Models.TurboFan):
 def index():
     return {"message": "Welcome Turbofan Prognostics!"}
 
-# Route with a single parameter, returns the parameter within a message
-# located at: http://127.0.0.1:8000/{substitute AnyNameHere}
-#@app.get("/{name}")
-#def get_name(name: str):
-#    return {"message": f"Hello, {name}"}
-
 # Run the API with uvicorn
 # Will run on http://127.0.0.1:8000
 
 if __name__ == "__main__":
     uvicorn.run("application:app", host="0.0.0.0", port=8000)
-    #uvicorn.run(app, host="127.0.0.1", port=8000)
