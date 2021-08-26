@@ -10,7 +10,6 @@ from preprocess import preprocess
 
 
 app = FastAPI()
-m = model
 
 @app.get('/')
 def home():
@@ -20,9 +19,11 @@ def home():
 def predict():
     f = open('./tests/test_payload.json', 'r')
     data: dict = json.loads(f.read())
-    to_return = {'unit_number': data['unit_number'][:10]}
-    print(data)
-    return to_return
+    df = pd.DataFrame.from_dict(data=data)
+    X = df.pipe(preprocess)
+    y = model.predict(X)
+
+    return {'predictions': json.dumps(y.tolist())}
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
