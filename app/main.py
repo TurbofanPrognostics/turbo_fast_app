@@ -23,11 +23,7 @@ def predict():
     X = df.pipe(preprocess)
     y = model.predict(X)
 
-    return {'predictions': json.dumps(y.tolist())}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+    return {'predictions': json.dumps(y.tolist()), 'num_predictions': len(y)}
 
 
 if __name__ == '__main__':
