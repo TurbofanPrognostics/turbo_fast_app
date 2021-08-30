@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 
 def drop_empty_cols(df: pd.DataFrame) -> pd.DataFrame:
@@ -12,7 +11,7 @@ def drop_empty_cols(df: pd.DataFrame) -> pd.DataFrame:
     return df.iloc[:, cols_to_keep]
 
 
-def preprocess(df: pd.DataFrame) -> np.ndarray:
+def preprocess(df: pd.DataFrame) -> pd.DataFrame:
     """
     Cleaning input data before training or inference;
     dropping columns that do not have much predictive power; 
