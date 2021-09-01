@@ -12,6 +12,8 @@ if __name__ == '__main__':
 	# 	if key not in to_request:
 	# 		to_send.pop(key)
 	#data = data['unit_number'][:10]
-	url = 'http://localhost:80/predict'
+	port = 8000
+	host = 'turbo-fast-app-dev.us-west-2.elasticbeanstalk.com'
+	url = f'http://{host}:{port}/predict'
 	response = requests.post(url=url, json=data)
 	print(response.text)
