@@ -1,0 +1,16 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Ports": [
+    {
+      "ContainerPort": 8000,
+      "HostPort": 8000
+    }
+  ],
+  "Volumes": [
+    {
+      "HostDirectory": "/var/app/current/app",
+      "ContainerDirectory": "/app"
+    }
+  ],
+  "Logging": "/var/log/nginx"
+}
