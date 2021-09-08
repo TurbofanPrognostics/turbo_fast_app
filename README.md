@@ -26,7 +26,5 @@ FourthBrain's AI/MLE May 2021 Cohort - FastAPI backend for turbofan engine failu
 13. `Enter DNS CNAME prefix`. Hit `default` if the name suffices.
 14. `Select a load balancer type`. Enter `2` for `application`.
 15. `Would you like to enable Spot Fleet requirements for this environmnet. Hit `N`.
-
 Elastic Beanstalk should now create the environment and automatically deploy your app for consumption.
-
 Use the command `eb terminate` and then enter the environment name to tear down the application off AWS Beanstalk. 
