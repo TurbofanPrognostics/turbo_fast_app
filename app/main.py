@@ -5,12 +5,13 @@ from fastapi.responses import JSONResponse
 import json
 import pandas as pd
 
-from pydantic_models import PostPredict
+from pydantic_models import PostBatchPredict, PostStreamPredict
 from Model import TurbofanModel
 from preprocess import preprocess
 
 
 app = FastAPI()
+model = TurbofanModel()
 
 @app.get('/')
 def home():
@@ -22,19 +23,27 @@ def test():
     data: dict = json.loads(f.read())
     df = pd.DataFrame.from_dict(data=data)
     X = df.pipe(preprocess)
-    y = model.predict(X)
+    y = model.predict_rul(X)
 
     return {'predictions': json.dumps(y.tolist()), 'num_predictions': len(y)}
 
 
-@app.post('/predict')
-def predict(request: PostPredict):
-    model = TurbofanModel()
+@app.post('/batch_predict')
+def batch_predict(request: PostBatchPredict):
     df = pd.DataFrame.from_dict(data=request.dict())
     X = df.pipe(preprocess)
     y = model.predict_rul(X)
     
     return {'num_predictions': str(len(y)), 'predictions': json.dumps(y.tolist())}
+
+
+@app.post('/stream_predict')
+def stream_predict(request: PostStreamPredict):
+    df = pd.DataFrame(data=request.dict(), index=[0])
+    X = df.pipe(preprocess)
+    y = model.predict_rul(X)
+
+    return {'prediction': str(y)}
 
 
 if __name__ == '__main__':
