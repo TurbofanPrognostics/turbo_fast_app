@@ -6,12 +6,11 @@ import json
 import pandas as pd
 
 from pydantic_models import PostBatchPredict, PostStreamPredict
-from Model import TurbofanModel
-from preprocess import preprocess
+from Model import TurbofanBaselineModel
 
 
 app = FastAPI()
-model = TurbofanModel()
+model = TurbofanBaselineModel()
 
 @app.get('/')
 def home():
@@ -31,7 +30,7 @@ def test():
 @app.post('/batch_predict')
 def batch_predict(request: PostBatchPredict):
     df = pd.DataFrame.from_dict(data=request.dict())
-    X = df.pipe(preprocess)
+    X = model.preprocess(df)
     y = model.predict_rul(X)
     
     return {'num_predictions': str(len(y)), 'predictions': json.dumps(y.tolist())}
@@ -40,10 +39,10 @@ def batch_predict(request: PostBatchPredict):
 @app.post('/stream_predict')
 def stream_predict(request: PostStreamPredict):
     df = pd.DataFrame(data=request.dict(), index=[0])
-    X = df.pipe(preprocess)
+    X = model.preprocess(df)
     y = model.predict_rul(X)
-
-    return {'prediction': str(y)}
+    
+    return {'prediction': y.tolist()[0]}
 
 
 if __name__ == '__main__':
