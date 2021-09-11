@@ -43,7 +43,7 @@ class TurbofanAbstractModel(ABC):
 
 
 class TurbofanBaselineModel(TurbofanAbstractModel):
-	def __init__(self, model_name='baseline_regression'):
+	def __init__(self, model_name='baseline_regression_clipped'):
 		super().__init__(model_name)
 
 	def preprocess(self, df: DataFrame) -> DataFrame:
