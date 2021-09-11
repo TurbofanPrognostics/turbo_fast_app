@@ -43,7 +43,7 @@ def stream_predict(request: PostStreamPredict):
     X = df.pipe(preprocess)
     y = model.predict_rul(X)
 
-    return {'prediction': str(y)}
+    return {'prediction': y.tolist()[0]}
 
 
 if __name__ == '__main__':
