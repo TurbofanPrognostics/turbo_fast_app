@@ -6,11 +6,11 @@ import json
 import pandas as pd
 
 from pydantic_models import PostBatchPredict, PostStreamPredict
-from Model import TurbofanBaselineModel
+from Model import TurbofanBaselineModel, TurbofanTimeSeriesModel
 
 
 app = FastAPI()
-model = TurbofanBaselineModel()
+model = TurbofanTimeSeriesModel()
 
 @app.get('/')
 def home():
@@ -33,7 +33,7 @@ def batch_predict(request: PostBatchPredict):
     X = model.preprocess(df)
     y = model.predict_rul(X)
     
-    return {'num_predictions': str(len(y)), 'predictions': json.dumps(y.tolist())}
+    return {'num_predictions': len(y), 'predictions': json.dumps(y.tolist())}
 
 
 @app.post('/stream_predict')
