@@ -71,3 +71,10 @@ class PostStreamPredict(BaseModel):
 	sensor_21: float
 	sensor_22: Optional[float]
 	sensor_23: Optional[float]
+
+
+class PostSelectModel(BaseModel):
+	"""
+	Input schema for POST request on /select_model endpoint
+	"""
+	model_name: str

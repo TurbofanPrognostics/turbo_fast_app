@@ -1,11 +1,12 @@
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 import json
 import pandas as pd
 
-from pydantic_models import PostBatchPredict, PostStreamPredict
+from pydantic_models import PostBatchPredict, PostStreamPredict, PostSelectModel
 from Model import TurbofanBaselineModel, TurbofanTimeSeriesModel
 
 
@@ -46,6 +47,24 @@ def test():
 def get_models():
     return {'models': list(MODELS.keys())}
 
+
+@app.post('/select_model',
+          status_code=status.HTTP_201_CREATED,
+          response_model=PostSelectModel)
+def select_model(request: PostSelectModel):
+    model_name: str = request.dict()['model_name']
+
+    # check if a valid model was passed
+    if model_name not in list(MODELS.keys()):
+        to_return: str = (f'Model Name "{moden_name}" does not exist'
+                          f'in valid models {list(MODELS.keys())}')
+        return JSONResponse(status_code=HTTPException.status_code,
+                            content={'detail': to_return})
+
+    # set model for inference
+    global model
+    model = MODELS[model_name]
+    return request
 
 @app.post('/batch_predict')
 def batch_predict(request: PostBatchPredict):
