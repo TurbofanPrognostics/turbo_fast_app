@@ -9,12 +9,27 @@ from pydantic_models import PostBatchPredict, PostStreamPredict
 from Model import TurbofanBaselineModel, TurbofanTimeSeriesModel
 
 
-app = FastAPI()
-model = TurbofanTimeSeriesModel()
 
+# maps model name to its class
+MODELS = {
+    'Baseline Regression Model': TurbofanBaselineModel,
+    'Time Series Regression Model': TurbofanTimeSeriesModel,
+}
+
+# load baseline model to begin service
+global model
+model = TurbofanBaselineModel()
+
+
+app = FastAPI()
+
+########################
+### ROUTES BEING HERE ##
+########################
 @app.get('/')
 def home():
     return {'hello': 'world'}
+
 
 @app.get('/test')
 def test():
@@ -25,6 +40,11 @@ def test():
     y = model.predict_rul(X)
 
     return {'predictions': json.dumps(y.tolist()), 'num_predictions': len(y)}
+
+
+@app.get('/models')
+def get_models():
+    return {'models': list(MODELS.keys())}
 
 
 @app.post('/batch_predict')
