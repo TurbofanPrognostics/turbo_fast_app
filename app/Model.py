@@ -4,7 +4,7 @@ import joblib
 from pandas import DataFrame
 from typing import BinaryIO
 
-from preprocess_utils import drop_empty_cols
+from preprocess_utils import drop_empty_cols, preprocess, add_lag_feature
 
 
 class TurbofanAbstractModel(ABC):
@@ -63,3 +63,24 @@ class TurbofanBaselineModel(TurbofanAbstractModel):
 		rul_predictions = self.model.predict(X)
 		return rul_predictions
 
+
+
+class TurbofanTimeSeriesModel(TurbofanAbstractModel):
+	def __init__(self, model_name='time_series_regression_clipped'):
+		super().__init__(model_name)
+
+	def preprocess(self, df: DataFrame) -> DataFrame:
+		"""
+		Cleans input data before training or inference by
+		dropping columns that do not have much predictive power,
+		computing lagged variables, and dropping rows with NAs
+		"""
+		df = df.pipe(preprocess)
+		lag_features = [col for col in df.columns.tolist() if col != 'RUL']
+		df = (df.pipe(add_lag_feature, **{'lag_level': 1, 'features': lag_features})
+				.dropna())
+		return df
+
+	def predict_rul(self, X: DataFrame) -> DataFrame:
+		rul_predictions = self.model.predict(X)
+		return rul_predictions

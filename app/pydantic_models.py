@@ -35,8 +35,8 @@ class PostBatchPredict(BaseModel):
 	sensor_19: List[float]
 	sensor_20: List[float]
 	sensor_21: List[float]
-	sensor_22: List[float]
-	sensor_23: List[float]
+	sensor_22: Optional[List[float]]
+	sensor_23: Optional[List[float]]
 
 
 class PostStreamPredict(BaseModel):
@@ -71,3 +71,10 @@ class PostStreamPredict(BaseModel):
 	sensor_21: float
 	sensor_22: Optional[float]
 	sensor_23: Optional[float]
+
+
+class PostSelectModel(BaseModel):
+	"""
+	Input schema for POST request on /select_model endpoint
+	"""
+	model_name: str
