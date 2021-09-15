@@ -61,9 +61,9 @@ def select_model(request: PostSelectModel):
         return JSONResponse(status_code=HTTPException.status_code,
                             content={'detail': to_return})
 
-    # set model for inference
+    # set & initialize model binary for inference
     global model
-    model = MODELS[model_name]
+    model = MODELS[model_name]()
     return request
 
 @app.post('/batch_predict')
