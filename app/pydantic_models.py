@@ -35,8 +35,8 @@ class PostBatchPredict(BaseModel):
 	sensor_19: List[float]
 	sensor_20: List[float]
 	sensor_21: List[float]
-	sensor_22: List[float]
-	sensor_23: List[float]
+	sensor_22: Optional[List[float]]
+	sensor_23: Optional[List[float]]
 
 
 class PostStreamPredict(BaseModel):
